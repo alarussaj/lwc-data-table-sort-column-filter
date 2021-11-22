@@ -11,7 +11,17 @@ p {
     overflow: scroll;
 }
 
+/* .documents-data-table {
+    --sds-c-button-shadow-focus: none;
+    --sds-c-button-shadow: none;
+    --sds-c-button-radius-border: 5rem;
+} */
+
 .documents-data-table {
     --sds-c-button-shadow-focus: none;
     --sds-c-button-shadow: none;
+    --sds-c-button-radius-border: .5rem; 
+    --sds-c-button-success-spacing-inline-start: .5rem;
+    --sds-c-button-success-spacing-inline-end: .5rem;
+    --sds-c-button-line-height: 1.25rem;
 }
