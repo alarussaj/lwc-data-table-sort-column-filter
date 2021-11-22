@@ -104,11 +104,8 @@ export default class App extends LightningElement {
     const actionName = event.detail.action.name;
     const row = event.detail.row;
     switch (actionName) {
-        case 'delete':
-            this.deleteRow(row);
-            break;
-        case 'show_details':
-            this.showRowDetails(row);
+        case 'view':
+            alert(row.Title);
             break;
         default:
     }
@@ -135,7 +132,7 @@ export default class App extends LightningElement {
     const row = event.detail.row;
     switch (actionName) {
         case "view":
-          console.log("view");
+          alert(row.Title);
           break;
         default:
     }
