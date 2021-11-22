@@ -1,10 +1,14 @@
-import { LightningElement } from "lwc";
+import { LightningElement, track } from "lwc";
 import { DATA, sortTable, filterColumns } from "./dataTableUtils.js";
 
 const ACTIONS = [
   {
     label: "View",
     name: "view" 
+  },
+  {
+    label: "Change Status",
+    name: "change_status" 
   }
 ];
 
@@ -21,11 +25,11 @@ const COLUMNS = [
             iconName: {
                 fieldName: "iconName"
             },
+            class: "title-button",
             iconAlternativeText: {
                 fieldName: "FileExtension"
             },
             iconClass: "slds-icon_-small",
-            name: "view"
         },
         typeAttributes: {
             label: { fieldName: "Title" },
@@ -34,8 +38,17 @@ const COLUMNS = [
         }
     },
     { label: "Document Type", fieldName: "Document_Type__c", sortable: true, wrapText: true },
-    { label: "Status", fieldName: "Status__c", sortable: true, type: "text" },
-    { label: "Client Portal Access", fieldName: "Client_Access__c", sortable: true },
+    {
+        label: "Status",
+        type: "button-icon",
+        fieldName: "Status__c",
+        sortable: true,
+        title: {
+          fieldName: "Status__c"
+        },
+        typeAttributes: {name: 'change_status', iconName: "action:update_status", variant: { fieldName: "IconVariant" }, alternativeText: { fieldName: "Status__c" }, iconClass: "slds-icon_-small" }
+    },
+    { label: "Client Portal Access", fieldName: "Client_Access__c", sortable: true},
     { label: "Examinee Portal Access", fieldName: "Examinee_Access__c", sortable: true },
     { label: "Case Number", fieldName: "Case_Number__c", sortable: true },
     {
@@ -84,7 +97,7 @@ const OPTIONS = [
 ];
 
 export default class App extends LightningElement {
-  data = DATA;
+  @track data = DATA;
   options = OPTIONS;
   defaultSortDirection = 'asc';
   sortDirection = 'asc';
@@ -106,6 +119,9 @@ export default class App extends LightningElement {
     switch (actionName) {
         case 'view':
             alert(row.Title);
+            break;
+        case 'status_update':
+            setStatus(row);
             break;
         default:
     }
@@ -134,8 +150,27 @@ export default class App extends LightningElement {
         case "view":
           alert(row.Title);
           break;
+        case "change_status":
+          this.setStatus(row);
+          break;
         default:
     }
+  }
+
+  setStatus(row) {
+    const data = [...this.data];
+    const index = data.findIndex((item) => item.Id === row.Id);
+    let status, variant;
+    if (row.Status__c === "Available") {
+      status = "Unavailable";
+      variant = "border";
+    } else {
+      status = "Available";
+      variant = "brand";
+    }
+    data[index].Status__c = status;
+    data[index].IconVariant = variant;
+    this.data = data;
   }
 
   handleOpenSelectFields() {
