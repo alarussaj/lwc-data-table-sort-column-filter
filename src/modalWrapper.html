@@ -1,0 +1,38 @@
+<template>
+  <section role="dialog" class={containerClasses}>
+    <div class="slds-modal__container">
+      <div class="slds-modal__header">
+        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={close}>
+                    <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xlink:href="/apexpages/slds/latest/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                    </svg>
+                </button>
+        <div class="slds-text-heading_medium slds-hyphenate">{title}</div>
+      </div>
+
+      <div class="slds-modal__content slds-p-around_medium">
+        <div class="slds-is-relative">
+          <template if:true={loading}>
+            <lightning-spinner variant="brand" alternative-text="Loading Modal"></lightning-spinner>
+          </template>
+          <div class="tabFirst" tabindex="0"></div>
+          <slot name="body"></slot>
+        </div>
+      </div>
+      <div class="slds-modal__footer slds-grid">
+        <slot name="footerLeftJustified"></slot>
+        <div class="slds-col--bump-left"></div>
+        <template if:true={error}>
+          <div title="An error was encountered, please review before re-submitting." class="slds-align--absolute-center"
+            style="margin-right: .5rem;">
+            <lightning-icon variant="error" icon-name="utility:warning" size="small" alternative-text="error indicator">
+            </lightning-icon>
+          </div>
+        </template>
+        <slot name="footer"></slot>
+        <div class="tabLast" tabindex="0"></div>
+      </div>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+</template>

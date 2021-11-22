@@ -1,0 +1,7 @@
+{
+  "name": "@wcd/alarussaj.lwc-data-table-sort-column-filter",
+  "version": "0.0.0",
+  "scripts": {
+    "serve": "npx wcd-cli@latest serve h45ziZzUMpVzPWUL50eO --open"
+  }
+}

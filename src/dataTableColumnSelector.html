@@ -1,0 +1,18 @@
+<template>
+  <template if:true={showModal}>
+    <c-modal-wrapper title={title} onclose={handleModalReset} loading={modalLoading} size="small" error={modalError}>
+      <div slot="body" class="slds-p-around_x-small">
+        <lightning-dual-listbox name="selectFieldsToDisplay" label={label} source-label={sourceLabel}
+          selected-label={selectedLabel} field-level-help={fieldLevelHelp} value={selectedOptions} options={options}
+          required-options={requiredOptions} onchange={handleChange}>
+        </lightning-dual-listbox>
+      </div>
+      <div slot="footer">
+        <lightning-button class="slds-button" variant="neutral" label="Cancel" onclick={handleModalReset}>
+        </lightning-button>
+        <lightning-button class="slds-button" variant="brand" label="Save" onclick={handleSave}>
+        </lightning-button>
+      </div>
+    </c-modal-wrapper>
+  </template>
+</template>
