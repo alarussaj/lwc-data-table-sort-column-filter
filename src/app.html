@@ -55,10 +55,10 @@
 				</div>
 			</div>
 		</div>
-		<div style="width: auto;height: 300px; border: 1px solid #CCCCCC;" class="documents-data-table">
+		<div style="width: auto;height: 300px; border: 1px solid #CCCCCC;">
 			<lightning-datatable key-field="Id" data={data} columns={columns} onrowaction={handleRowAction}
 				hide-checkbox-column default-sort-direction={defaultSortDirection} sorted-direction={sortDirection}
-				sorted-by={sortedBy} onsort={handleSort}>
+				sorted-by={sortedBy} onsort={handleSort} class="documents-data-table">
 			</lightning-datatable>
 			<template if:true={columns}>
 				<c-data-table-column-selector options={options} selected-options={defaultColumns}
