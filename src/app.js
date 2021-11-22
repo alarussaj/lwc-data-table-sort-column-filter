@@ -13,6 +13,9 @@ const COLUMNS = [
         label: "Title",
         type: "button",
         fieldName: "Title",
+        title: {
+          fieldName: "Title"
+        },
         sortable: true,
         cellAttributes: {
             iconName: {
