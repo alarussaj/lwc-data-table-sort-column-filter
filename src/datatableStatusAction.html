@@ -1,0 +1,10 @@
+<template>
+    <div class="slds-media slds-media_center slds-has-flexi-truncate slds-m-around_xxx-small">
+        <div class="slds-p-right_x-small">
+            <lightning-button-icon-stateful icon-name={iconName} alternative-text={title} title={title}
+                aria-label={title} size="small" selected={isSelected} onclick={handleChange}>
+            </lightning-button-icon-stateful>
+        </div>
+        <div class="slds-truncate">{value}</div>
+    </div>
+</template>
