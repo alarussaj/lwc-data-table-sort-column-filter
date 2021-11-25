@@ -56,13 +56,22 @@
 			</div>
 		</div>
 		<div style="width: auto;height: 300px; border: 1px solid #CCCCCC;">
-			<lightning-datatable key-field="Id" data={data} columns={columns} onrowaction={handleRowAction}
+			<c-custom-datatable key-field="Id" data={data} columns={columns} onrowaction={handleRowAction}
 				hide-checkbox-column default-sort-direction={defaultSortDirection} sorted-direction={sortDirection}
-				sorted-by={sortedBy} onsort={handleSort} class="documents-data-table">
-			</lightning-datatable>
+				sorted-by={sortedBy} onsort={handleSort} class="documents-data-table" onstatuschange={handleStatusChange}>
+			</c-custom-datatable>
+			<template if:true={isLoading}>
+				<div class="slds-spinner_container">
+					<div role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+						<span class="slds-assistive-text">Loading</span>
+						<div class="slds-spinner__dot-a"></div>
+						<div class="slds-spinner__dot-b"></div>
+					</div>
+				</div>
+			</template>
 			<template if:true={columns}>
-				<c-data-table-column-selector options={options} selected-options={defaultColumns}
-					onsave={handleColumnsSelected}></c-data-table-column-selector>
+				<c-datatable-column-selector options={options} selected-options={defaultColumns} onsave={handleColumnsSelected}>
+				</c-datatable-column-selector>
 			</template>
 		</div>
 	</lightning-card>

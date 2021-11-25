@@ -12,7 +12,8 @@ const DATA =[
     "FileType": "TIFF",
     "IsFinal__c": true,
     "Case_Number__c": "0003002",
-    "iconName": "doctype:image"
+    "iconName": "doctype:image",
+    "isSelected": true
   },
   {
     "Id": "00002",
@@ -27,7 +28,8 @@ const DATA =[
     "FileType": "PNG",
     "IsFinal__c": false,
     "Case_Number__c": "0003002",
-    "iconName": "doctype:image"
+    "iconName": "doctype:image",
+    "isSelected": true
   },
   {
     "Id": "00003",
@@ -42,7 +44,8 @@ const DATA =[
     "FileType": "PDF",
     "IsFinal__c": false,
     "Case_Number__c": "0003003",
-    "iconName": "doctype:pdf"
+    "iconName": "doctype:pdf",
+    "isSelected": true
   },
   {
     "Id": "00004",
@@ -57,7 +60,8 @@ const DATA =[
     "FileType": "PDF",
     "IsFinal__c": false,
     "Case_Number__c": "0003004",
-    "iconName": "doctype:pdf"
+    "iconName": "doctype:pdf",
+    "isSelected": false
   },
   {
     "Id": "00005",
@@ -72,7 +76,8 @@ const DATA =[
     "FileType": "PDF",
     "IsFinal__c": false,
     "Case_Number__c": "0003005",
-    "iconName": "doctype:pdf"
+    "iconName": "doctype:pdf",
+    "isSelected": false
   },
   {
     "Id": "00006",
@@ -87,7 +92,8 @@ const DATA =[
     "FileType": "PDF",
     "IsFinal__c": true,
     "Case_Number__c": "0003006",
-    "iconName": "doctype:pdf"
+    "iconName": "doctype:pdf",
+    "isSelected": true
   }
 ];
 
@@ -142,9 +148,9 @@ class DatatableUtilsError extends Error {
 /**
  * Sorts records in a datatable
  * Example: array.sort(sortBy(sortedBy, sortDirection === "asc" ? 1 : -1));
- * @param {String} field
- * @param {Number} reverse
- * @param {Function} primer (optional)
+ * @param {string} field
+ * @param {number} reverse
+ * @param {function} primer (optional)
  */
 function sortBy(field, reverse, primer) {
     const key = primer
@@ -154,7 +160,6 @@ function sortBy(field, reverse, primer) {
         : (x) => {
               return x[field];
           };
-
     return (a, b) => {
         a = key(a);
         b = key(b);
@@ -183,7 +188,7 @@ function sortTable(data, sortedBy, sortDirection) {
  * @param {Object[]]} columns
  * @param {string[]} selectedOptions
  */
-async function filterColumns(columns, selectedFieldNames) {
+function filterColumns(columns, selectedFieldNames) {
     const promise = new Promise((resolve, reject) => {
         if (!columns?.length || !selectedFieldNames?.length) {
             reject(new DatatableUtilsError("Columns and selected field names cannot be empty."));

@@ -1,7 +1,7 @@
 <template>
   <template if:true={showModal}>
     <c-modal-wrapper title={title} onclose={handleModalReset} loading={modalLoading} size="small" error={modalError}>
-      <div slot="body" class="slds-p-around_x-small">
+      <div slot="body" class="column-selector">
         <lightning-dual-listbox name="selectFieldsToDisplay" label={label} source-label={sourceLabel}
           selected-label={selectedLabel} field-level-help={fieldLevelHelp} value={selectedOptions} options={options}
           required-options={requiredOptions} onchange={handleChange}>
