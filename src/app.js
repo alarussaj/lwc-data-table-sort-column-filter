@@ -1,14 +1,10 @@
 import { LightningElement, track } from "lwc";
-import { DATA, sortTable, filterColumns } from "./dataTableUtils.js";
+import { DATA, sortTable, filterColumns } from "./datatableUtils.js";
 
 const ACTIONS = [
   {
     label: "View",
     name: "view" 
-  },
-  {
-    label: "Change Status",
-    name: "change_status" 
   }
 ];
 
@@ -40,13 +36,16 @@ const COLUMNS = [
     { label: "Document Type", fieldName: "Document_Type__c", sortable: true, wrapText: true },
     {
         label: "Status",
-        type: "button-icon",
+        type: "datatableStatusAction",
         fieldName: "Status__c",
         sortable: true,
-        title: {
-          fieldName: "Status__c"
-        },
-        typeAttributes: {name: 'change_status', iconName: "action:update_status", variant: { fieldName: "IconVariant" }, alternativeText: { fieldName: "Status__c" }, iconClass: "slds-icon_-small" }
+        typeAttributes: {
+            recordId: { fieldName: "Id" },
+            iconName: "action:update_status",
+            valueWhenOn: "Available",
+            valueWhenOff: "Unavailable",
+            isSelected: { fieldName: "isSelected" }
+        }
     },
     { label: "Client Portal Access", fieldName: "Client_Access__c", sortable: true},
     { label: "Examinee Portal Access", fieldName: "Examinee_Access__c", sortable: true },
@@ -96,14 +95,17 @@ const OPTIONS = [
     { value: "IsFinal__c", label: "Finalized" }
 ];
 
+const DELAY = 300;
+
 export default class App extends LightningElement {
-  @track data = DATA;
   options = OPTIONS;
   defaultSortDirection = 'asc';
   sortDirection = 'asc';
   sortedBy;
   defaultColumns = DEFAULT_COLUMNS;
+  isLoading = false;
   _columns;
+  @track _data = DATA;
 
   get columns() {
     return this._columns ?? [];
@@ -113,29 +115,28 @@ export default class App extends LightningElement {
     this.setfilteredColumns(this.defaultColumns);
   }
 
-  handleRowAction(event) {
-    const actionName = event.detail.action.name;
-    const row = event.detail.row;
-    switch (actionName) {
-        case 'view':
-            alert(row.Title);
-            break;
-        case 'status_update':
-            setStatus(row);
-            break;
-        default:
-    }
+  get data() {
+    return this._data ?? [];
   }
 
   async handleSort(event) {
+    this.isLoading = true;
     const { fieldName: sortedBy, sortDirection } = event.detail;
-    this.data = await sortTable(this.data, sortedBy, sortDirection);
+    this._data = await sortTable(this._data, sortedBy, sortDirection);
     this.sortDirection = sortDirection;
     this.sortedBy = sortedBy;
+    this.cancelLoading();
   }
 
   async setfilteredColumns(selectedColumns) {
     this._columns = await filterColumns(COLUMNS, selectedColumns);
+  }
+
+  cancelLoading() {
+    // eslint-disable-next-line @lwc/lwc/no-async-operation
+    setTimeout(() => {
+        this.isLoading = false;
+    }, DELAY);
   }
 
   handleColumnsSelected(event) {
@@ -150,31 +151,23 @@ export default class App extends LightningElement {
         case "view":
           alert(row.Title);
           break;
-        case "change_status":
-          this.setStatus(row);
-          break;
         default:
     }
   }
 
-  setStatus(row) {
-    const data = [...this.data];
-    const index = data.findIndex((item) => item.Id === row.Id);
-    let status, variant;
-    if (row.Status__c === "Available") {
-      status = "Unavailable";
-      variant = "border";
-    } else {
-      status = "Available";
-      variant = "brand";
-    }
-    data[index].Status__c = status;
-    data[index].IconVariant = variant;
-    this.data = data;
+  handleStatusChange(event) {
+    this.isLoading = true;
+    const { recordId, value } = event.detail;
+    const data = [...this._data];
+    const index = data.findIndex((item) => item.Id === recordId);
+    data[index].Status__c = value;
+    console.log(data[index].Status__c);
+    this._data = data;
+    this.cancelLoading();
   }
 
   handleOpenSelectFields() {
-    this.template.querySelector("c-data-table-column-selector").show();
+    this.template.querySelector("c-datatable-column-selector").show();
   }
 
   handleDummyClick() {
